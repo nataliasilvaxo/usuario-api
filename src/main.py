@@ -1,5 +1,4 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from urllib.parse import urlparse, parse_qs
 import json
 import os
 
@@ -20,32 +19,33 @@ class Servidor(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        print("PATH:", repr(self.path), flush=True)
+        ruta = self.path.strip()
+        print("RUTA RECIBIDA:", ruta, flush=True)
 
-        if self.path == "/" or self.path == "":
-            self.responder({"mensaje": "API funcionando. Usa /insertar"})
+        if ruta == "/":
+            self.responder({"mensaje": "API funcionando"})
             return
 
-        if self.path.startswith("/insertar"):
+        if ruta.startswith("/insertar/"):
             try:
-                parsed = urlparse(self.path)
-                params = parse_qs(parsed.query)
+                partes = ruta.split("/")
 
-                id = int(params["id"][0])
-                nombre = params["nombre"][0]
-                correo = params["correo"][0]
+                # ['', 'insertar', '99999', 'Natalia', 'silva_u.com']
+                id_usuario = int(partes[2])
+                nombre = partes[3]
+                correo = partes[4]
 
-                usuario = Usuario(id, nombre, correo)
+                usuario = Usuario(id_usuario, nombre, correo)
                 coleccion = get_coleccion()
                 coleccion.insert_one(usuario.to_dict())
 
-                self.responder({"mensaje": "Usuario guardado"})
+                self.responder({"mensaje": "Usuario guardado correctamente"})
             except Exception as e:
-                print("ERROR INSERTAR:", str(e), flush=True)
+                print("ERROR:", str(e), flush=True)
                 self.responder({"error": str(e)}, 500)
             return
 
-        self.responder({"error": f"Ruta no encontrada: {self.path}"}, 404)
+        self.responder({"error": "Ruta no encontrada"}, 404)
 
 
 if __name__ == "_main_":
