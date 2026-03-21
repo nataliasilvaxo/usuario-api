@@ -11,9 +11,9 @@ class Servidor(BaseHTTPRequestHandler):
 
     def responder(self, data, status=200):
         self.send_response(status)
-        self.send_header("Content-type", "application/json")
+        self.send_header("Content-Type", "application/json; charset=utf-8")
         self.end_headers()
-        self.wfile.write(json.dumps(data).encode())
+        self.wfile.write(json.dumps(data).encode("utf-8"))
 
     def do_HEAD(self):
         self.send_response(200)
