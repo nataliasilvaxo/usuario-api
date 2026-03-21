@@ -21,8 +21,11 @@ class Servidor(BaseHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urlparse(self.path)
-        ruta = parsed.path.rstrip("/")
+        ruta = parsed.path
         params = parse_qs(parsed.query)
+
+        print("RUTA RECIBIDA:", ruta)
+        print("PARAMS:", params)
 
         if ruta == "/":
             self.responder({"mensaje": "API funcionando. Usa /insertar"})
@@ -37,12 +40,11 @@ class Servidor(BaseHTTPRequestHandler):
                 coleccion.insert_one(usuario.to_dict())
 
                 self.responder({"mensaje": "Usuario guardado"})
-
             except Exception as e:
                 self.responder({"error": str(e)}, 500)
 
         else:
-            self.responder({"error": "Ruta no encontrada"}, 404)
+            self.responder({"error": f"Ruta no encontrada: {ruta}"}, 404)
 
 
 if __name__ == "__main__":
