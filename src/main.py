@@ -20,18 +20,19 @@ class Servidor(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        parsed = urlparse(self.path)
-        ruta = parsed.path.strip()
-        params = parse_qs(parsed.query)
+        print("PATH COMPLETO:", repr(self.path), flush=True)
 
-        print("RUTA:", repr(ruta))
-        print("PARAMS:", params)
-
-        if ruta == "/" or ruta == "":
+        if self.path == "/" or self.path == "":
             self.responder({"mensaje": "API funcionando. Usa /insertar"})
+            return
 
-        elif ruta.startswith("/insertar"):
+        if self.path.startswith("/insertar"):
             try:
+                parsed = urlparse(self.path)
+                params = parse_qs(parsed.query)
+
+                print("PARAMS:", params, flush=True)
+
                 id = int(params["id"][0])
                 nombre = params["nombre"][0]
                 correo = params["correo"][0]
@@ -42,13 +43,13 @@ class Servidor(BaseHTTPRequestHandler):
                 self.responder({"mensaje": "Usuario guardado"})
             except Exception as e:
                 self.responder({"error": str(e)}, 500)
+            return
 
-        else:
-            self.responder({"error": f"Ruta no encontrada: {ruta}"}, 404)
+        self.responder({"error": f"Ruta no encontrada: {self.path}"}, 404)
 
 
-if __name__ == "__main__":
+if __name__ == "_main_":
     port = int(os.getenv("PORT", 8000))
     servidor = HTTPServer(("0.0.0.0", port), Servidor)
-    print("Servidor corriendo...")
+    print("Servidor corriendo...", flush=True)
     servidor.serve_forever()
