@@ -1,7 +1,6 @@
+import os
 from pymongo import MongoClient
 
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient(os.getenv("MONGO_URI"))
 db = client["curso_python"]
 coleccion = db["usuarios"]
-
-print("Conexión exitosa")
