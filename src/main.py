@@ -21,7 +21,7 @@ class Servidor(BaseHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urlparse(self.path)
-        ruta = parsed.path
+        ruta = parsed.path.rstrip("/")
         params = parse_qs(parsed.query)
 
         if ruta == "/":
