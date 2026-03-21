@@ -21,16 +21,16 @@ class Servidor(BaseHTTPRequestHandler):
 
     def do_GET(self):
         parsed = urlparse(self.path)
-        ruta = parsed.path
+        ruta = parsed.path.strip()
         params = parse_qs(parsed.query)
 
-        print("RUTA RECIBIDA:", ruta)
+        print("RUTA:", repr(ruta))
         print("PARAMS:", params)
 
-        if ruta == "/":
+        if ruta == "/" or ruta == "":
             self.responder({"mensaje": "API funcionando. Usa /insertar"})
 
-        elif ruta == "/insertar":
+        elif ruta.startswith("/insertar"):
             try:
                 id = int(params["id"][0])
                 nombre = params["nombre"][0]
