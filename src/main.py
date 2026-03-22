@@ -10,7 +10,6 @@ def inicio():
     nombre = request.args.get("nombre")
     correo = request.args.get("correo")
 
-    # 👉 Si vienen datos → guarda en Mongo
     if id_usuario and nombre and correo:
         try:
             usuario = Usuario(int(id_usuario), nombre, correo)
@@ -19,10 +18,8 @@ def inicio():
         except Exception as e:
             return jsonify({"error": str(e)})
 
-    # 👉 Si no vienen datos → solo prueba API
     return jsonify({"mensaje": "API funcionando"})
 
-# 👇 IMPORTANTE para Render
 if __name__ == "_main_":
     import os
     port = int(os.environ.get("PORT", 10000))
