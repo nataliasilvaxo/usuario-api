@@ -9,7 +9,7 @@ app = Flask(__name__)
 def inicio():
     return jsonify({"mensaje": "API funcionando"})
 
-@app.route("/insertar")
+@app.route("/insertar", strict_slashes=False)
 def insertar():
     id_usuario = int(request.args.get("id"))
     nombre = request.args.get("nombre")
