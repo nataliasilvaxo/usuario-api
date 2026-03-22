@@ -1,5 +1,4 @@
-import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from conexion import coleccion
 from models.usuario import Usuario
 
@@ -9,15 +8,13 @@ app = Flask(__name__)
 def inicio():
     return jsonify({"mensaje": "API funcionando"})
 
-@app.route("/insertar/<int:id>/<nombre>/<correo>")
-def insertar(id, nombre, correo):
-    try:
-        usuario = Usuario(id, nombre, correo)
-        coleccion.insert_one(usuario.to_dict())
-        return jsonify({"mensaje": "Usuario guardado correctamente"})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+@app.route("/insertar")
+def insertar():
+    id_usuario = int(request.args.get("id"))
+    nombre = request.args.get("nombre")
+    correo = request.args.get("correo")
 
-if __name__ == "_main_":
-    port = int(os.getenv("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    usuario = Usuario(id_usuario, nombre, correo)
+    coleccion.insert_one(usuario.to_dict())
+
+    return jsonify({"mensaje": "Usuario guardado"})
