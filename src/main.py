@@ -18,6 +18,6 @@ def inicio():
 
     return jsonify({"mensaje": "API funcionando"})
 
-if _name_ == "_main_":
+if __name__ == "_main_":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
