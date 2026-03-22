@@ -3,7 +3,7 @@ from conexion import coleccion
 from models.usuario import Usuario
 import os
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 @app.route("/")
 def inicio():
