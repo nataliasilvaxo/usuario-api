@@ -11,12 +11,11 @@ def inicio():
     nombre = request.args.get("nombre")
     correo = request.args.get("correo")
 
-    if id_usuario and nombre and correo:
-        usuario = Usuario(int(id_usuario), nombre, correo)
-        coleccion.insert_one(usuario.to_dict())
-        return jsonify({"mensaje": "Usuario guardado"})
-
-    return jsonify({"mensaje": "API funcionando"})
+    return jsonify({
+        "id": id_usuario,
+        "nombre": nombre,
+        "correo": correo
+    })
 
 if __name__ == "_main_":
     port = int(os.environ.get("PORT", 10000))
