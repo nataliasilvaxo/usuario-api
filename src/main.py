@@ -7,7 +7,10 @@ app = Flask(__name__)
 
 @app.route("/")
 def inicio():
-    return jsonify({"prueba": "version nueva"})
+    return jsonify({
+        "ruta": request.path,
+        "query": request.query_string.decode()
+    })
 
 if __name__ == "_main_":
     port = int(os.environ.get("PORT", 10000))
