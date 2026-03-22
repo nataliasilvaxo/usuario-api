@@ -1,8 +1,6 @@
 import os
 from pymongo import MongoClient
 
-def get_coleccion():
-    uri = os.getenv("MONGO_URI")
-    client = MongoClient(uri)
-    db = client["curso_python"]
-    return db["usuarios"]
+client = MongoClient(os.getenv("MONGO_URI"))
+db = client["curso_python"]
+coleccion = db["usuarios"]
